@@ -56,7 +56,8 @@ def add_p_l(data):
 
 
     # Add profit/loss columns:
-    data['profit_loss'] = data['total_pymnt'] + data['recoveries'] - data['funded_amnt_inv'] - data['out_prncp']
+    # data['profit_loss'] = data['total_pymnt'] + data['recoveries'] - data['funded_amnt_inv'] - data['out_prncp']
+    data['profit_loss'] = (data['funded_amnt_inv'] - data['total_pymnt'] - data['recoveries'] - data['out_prncp']) * -1
     data['profit_loss_pct'] = data['profit_loss'] / data['funded_amnt_inv']
 
     return data
@@ -75,10 +76,19 @@ def check_status(data):
 
     return data
 
+
+# Group by Grade, save to .csv
+def group_grade_csv(data, csv_name):
+
+    grouped_data = data.groupby(['grade']).sum()[['funded_amnt_inv', 'total_pymnt', 'out_prncp',
+                                                  'recoveries', 'profit_loss']]
+    grouped_data.to_csv(csv_name, index_label='grade', index='grade')
+
+
+# Save all loan data to .csv
 def to_csv(data, csv_name):
 
     data.to_csv(csv_name, index_label=False, index=False)
-
 
 
 if __name__ == '__main__':
@@ -90,6 +100,7 @@ if __name__ == '__main__':
     data = check_status(data)
     data = add_clean_status(data)
     data = add_p_l(data)
-    to_csv(data, 'LC_loans_by_grade.csv')
+    group_grade_csv(data, 'LC_loans_by_grade.csv')
+    to_csv(data, 'LC_loans_all.csv')
 
     print('Done, data exported to .csv')
