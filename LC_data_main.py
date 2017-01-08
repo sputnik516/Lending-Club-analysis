@@ -8,6 +8,10 @@ class LoanData(object):
     def __init__(self, fname):
         self.fname = fname
         self.data = pd.DataFrame()
+        self.data_from_db()
+        self.check_status()
+        self.add_clean_status()
+        self.add_p_l()
 
     # Connect to database and pull in raw data
     def data_from_db(self):
@@ -93,9 +97,7 @@ if __name__ == '__main__':
     fname = 'database.sqlite'
 
     data = LoanData(fname)
-    data.data_from_db()
-    data.check_status()
-    data.add_clean_status()
-    data.add_p_l()
+    
+    # Output
     data.group_grade_csv('LC_loans_by_grade.csv')
     data.to_csv('LC_loans_all.csv')
