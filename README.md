@@ -5,6 +5,7 @@ The original database has nearly 1 million lines. lc_loan_data.py reads this dat
 
 This program can be run from the command line. The user inputs the database name, and the type of output required:
 
-* csv_all - Export all data to .csv
-* csv_by_grade - Export .csv grouped by loan grade
+* -csv_all - Export all data to .csv
+* -csv_by_grade - Export .csv grouped by loan grade
+* -h - Help and available commands
 
