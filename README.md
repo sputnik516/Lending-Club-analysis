@@ -3,6 +3,8 @@ Raw data can be found here: https://www.kaggle.com/wendykan/lending-club-loan-da
 
 The original database has nearly 1 million lines. lc_loan_data.py reads this data, cleans it, and exports .csv files that are small enough for a user to be able to easily work with using excel.
 
-* to_csv - Export all data to .csv
-* group_grade_csv - Export .csv grouped by loan grade
+This program can be run from the command line. The user inputs the database name, and the type of output required:
+
+* csv_all - Export all data to .csv
+* csv_by_grade - Export .csv grouped by loan grade
 
