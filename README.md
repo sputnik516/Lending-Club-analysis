@@ -11,4 +11,4 @@ This program can be run from the command line. The user inputs the database name
 * -ppt_grade - create a PowerPoint including a loan summary, and table of loans by grade
 
 
-Video Demo: https://youtu.be/FKxeaLPO4CA
+Video Demo: https://www.youtube.com/watch?v=F8BXn7gM1DA
