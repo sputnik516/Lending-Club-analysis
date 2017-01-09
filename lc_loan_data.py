@@ -3,6 +3,7 @@ import sqlite3 as sql
 import argparse
 import sys
 import datetime as dt
+import to_pptx as ppt
 
 
 class LoanData(object):
@@ -30,7 +31,7 @@ class LoanData(object):
 
         # Read data from the Database, tell user number of records.
         try:
-            self.data = pd.read_sql_query('SELECT * FROM loan LIMIT 100', db_con)
+            self.data = pd.read_sql_query('SELECT * FROM loan', db_con)
             print('Read {} records from database "{}"'.format(len(self.data), self.database_file))
 
         except pd.io.sql.DatabaseError:
@@ -100,6 +101,16 @@ class LoanData(object):
         # Remove rows with no 'loan_status'
         self.data = self.data[self.data.loan_status.notnull()]
 
+    def group_grade_ppt(self, pptx_name):
+        """Group by Grade, save to PowerPoint presentation"""
+
+        grouped_data = self.data.groupby(['grade']).sum()[['funded_amnt_inv', 'total_pymnt', 'out_prncp',
+                                                           'recoveries', 'profit_loss']]
+
+        ppt.new_pptx(pptx_name, grouped_data)
+
+        print('Exported data to "{}"'.format(pptx_name))
+
     def group_grade_csv(self, csv_name):
         """Group by Grade, save to .csv"""
 
@@ -123,6 +134,8 @@ if __name__ == '__main__':
     parser.add_argument('-csv_all', '--all_data_to_csv', help='Output all data to .csv file', action='store_true')
     parser.add_argument('-csv_by_grade', '--group_by_grade_to_csv', help='Output all data to .csv file, '
                                                                          'grouped by loan grade', action='store_true')
+    parser.add_argument('-ppt_grade', '--group_by_grade_to_ppt', help='Output all data to PowerPoint Presentation, '
+                                                                         'grouped by loan grade', action='store_true')
     args = parser.parse_args()
 
     date_time_now = dt.datetime.now()
@@ -132,4 +145,7 @@ if __name__ == '__main__':
 
     if args.group_by_grade_to_csv:
         LoanData(args.loan_database_name).group_grade_csv('loans_by_grade_{}.csv'.format(date_time_now))
+
+    if args.group_by_grade_to_ppt:
+        LoanData(args.loan_database_name).group_grade_ppt('Loan_Performance_{}.ppt'.format(date_time_now))
 
