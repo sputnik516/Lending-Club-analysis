@@ -8,4 +8,5 @@ This program can be run from the command line. The user inputs the database name
 * -csv_all - Export all data to .csv
 * -csv_by_grade - Export .csv grouped by loan grade
 * -h - Help and available commands
+* -ppt_grade - create a PowerPoint including a loan summary, and table of loans by grade
 
